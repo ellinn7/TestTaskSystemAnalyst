@@ -1,0 +1,652 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Swagger Contracts",
+    "description": "Спецификация API модуля Договоры",
+    "contact": {
+      "email": "ellinvzorina@yandex.ru"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Описание требований",
+    "url": "https://docs.google.com/document/d/1lczE3AxYljRbmhk8Hqo5TCrOQtQy1PF65bA2Mb2hZT0/edit?usp=sharing"
+  },
+  "servers": [
+    {
+      "url": "https://TESTAPP/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "contract",
+      "description": "Договоры"
+    },
+    {
+      "name": "contractSubject",
+      "description": "Предметы договоров"
+    },
+    {
+      "name": "contractParties",
+      "description": "Стороны договоров"
+    }
+  ],
+  "paths": {
+    "/contract": {
+      "post": {
+        "tags": [
+          "contract"
+        ],
+        "summary": "Создание новой заявки",
+        "operationId": "addContract",
+        "requestBody": {
+          "description": "Объект Договор, создание нового",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contract"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка валидации",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/contract/{application}": {
+      "get": {
+        "tags": [
+          "contract"
+        ],
+        "summary": "Поиск договора по ИД Заявки",
+        "description": "Возвращает Договор по ИД Заявки",
+        "operationId": "getContractById",
+        "parameters": [
+          {
+            "name": "application",
+            "in": "path",
+            "description": "ИД заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contract"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Передан неверный идентификатор",
+            "content": {}
+          },
+          "404": {
+            "description": "Не найдено",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/contract/{id}": {
+      "post": {
+        "tags": [
+          "contract"
+        ],
+        "summary": "Обновление информации о договоре",
+        "operationId": "updateContract",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД Договора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект Договор, обновление",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contract"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка ввода",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ]
+      }
+    },
+    "/contractSubjects": {
+      "get": {
+        "tags": [
+          "contractSubject"
+        ],
+        "summary": "Список Предметов договоров",
+        "operationId": "getContractSubjects",
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayOfContractSubjects"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contractSubject": {
+      "post": {
+        "tags": [
+          "contractSubject"
+        ],
+        "summary": "Создание нового Предмета договора",
+        "operationId": "addContractSubject",
+        "requestBody": {
+          "description": "Объект Предмет договора, создание нового",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractSubject"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка валидации",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/contractSubjects/{id}": {
+      "get": {
+        "tags": [
+          "contractSubject"
+        ],
+        "summary": "Поиск Предметов договора по ИД",
+        "description": "Возвращает Предмет договора по его ИД",
+        "operationId": "getContractSubjectById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД предмета договора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int16"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContractSubject"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Передан неверный идентификатор",
+            "content": {}
+          },
+          "404": {
+            "description": "Не найдено",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "contractSubject"
+        ],
+        "summary": "Обновление информации о Предмете договоров",
+        "operationId": "updateContractSubject",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД предмета  договора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int16"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект Предмет договора, обновление",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractSubject"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка ввода",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ]
+      }
+    },
+    "/contractParty/findByContract": {
+      "get": {
+        "tags": [
+          "contractParty"
+        ],
+        "summary": "Список Сторон договора по ИД договора",
+        "operationId": "getContractPartiesByContract",
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "query",
+            "description": "ИД Договора",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayOfContractParties"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contractParty": {
+      "post": {
+        "tags": [
+          "contractParty"
+        ],
+        "summary": "Создание новой Стороны договора",
+        "operationId": "addContractParty",
+        "requestBody": {
+          "description": "Объект Сторона договора, создание нового",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractParty"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка валидации",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/contractParty/{id}": {
+      "get": {
+        "tags": [
+          "contractParty"
+        ],
+        "summary": "Поиск Стороны договора по ИД",
+        "description": "Возвращает Сторону договора по ИД",
+        "operationId": "getContractPartyById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД стороны договора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContractParty"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Передан неверный идентификатор",
+            "content": {}
+          },
+          "404": {
+            "description": "Не найдено",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "contractParty"
+        ],
+        "summary": "Обновление информации о Стороне договора",
+        "operationId": "updateContractParty",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД Стороны договора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект Сторона договора, обновление",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractParty"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка ввода",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ContractSubject": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int16"
+          },
+          "name": {
+            "type": "string"
+          },
+          "activeState": {
+            "type": "boolean"
+          }
+        },
+        "xml": {
+          "name": "ContractSubject"
+        }
+      },
+      "ContractParty": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "contract": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "counterpartyId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "counterpartyName": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "xml": {
+          "name": "ContractParty"
+        }
+      },
+      "Contract": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "number": {
+            "type": "string",
+            "maxLength": 100,
+            "pattern": "^\\w{1,999}$"
+          },
+          "issuanceDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/ContractSubject"
+          },
+          "contractAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "expirationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 5000
+          },
+          "application": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "partiesView": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "contractParties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContractParty"
+            }
+          }
+        },
+        "xml": {
+          "name": "Application"
+        }
+      },
+      "ArrayOfContractSubjects": {
+        "type": "object",
+        "properties": {
+          "objectTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContractSubject"
+            }
+          }
+        },
+        "xml": {
+          "name": "ArrayOfContractSubjects"
+        }
+      },
+      "ArrayOfContractParties": {
+        "type": "object",
+        "properties": {
+          "applicationExecutors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContractParty"
+            }
+          }
+        },
+        "xml": {
+          "name": "ArrayOfContractParties"
+        }
+      }
+    },
+    "securitySchemes": {
+      "applications_auth": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://TESTAPP/oauth/dialog",
+            "scopes": {
+              "write:app": "modify pets in your account",
+              "read:app": "read your pets"
+            }
+          }
+        }
+      },
+      "api_key": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header"
+      }
+    }
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Swagger Counterparty",
+    "description": "Спецификация API модуля Контрагенты",
+    "contact": {
+      "email": "ellinvzorina@yandex.ru"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Описание требований",
+    "url": "https://docs.google.com/document/d/1lczE3AxYljRbmhk8Hqo5TCrOQtQy1PF65bA2Mb2hZT0/edit?usp=sharing"
+  },
+  "servers": [
+    {
+      "url": "https://TESTAPP/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "counterparty",
+      "description": "Контрагенты"
+    }
+  ],
+  "paths": {
+    "/counterparties": {
+      "get": {
+        "tags": [
+          "counterparty"
+        ],
+        "summary": "Список Контрагентов",
+        "operationId": "getCounterparties",
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayOfCounterparties"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/counterparty": {
+      "post": {
+        "tags": [
+          "counterparty"
+        ],
+        "summary": "Создание нового Контрагента",
+        "operationId": "addCounterparty",
+        "requestBody": {
+          "description": "Объект Контрагент, создание нового",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Counterparty"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка валидации",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/counterparty/{id}": {
+      "get": {
+        "tags": [
+          "counterparty"
+        ],
+        "summary": "Поиск Контрагента по ИД",
+        "description": "Возвращает Контрагента по ИД",
+        "operationId": "getCounterpartyById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД контрагента",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Counterparty"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Передан неверный идентификатор",
+            "content": {}
+          },
+          "404": {
+            "description": "Не найдено",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "counterparty"
+        ],
+        "summary": "Обновление информации о Контрагенте",
+        "operationId": "updateCounterparty",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД Контрагента",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект Контрагент, обновление",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Counterparty"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка ввода",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Counterparty": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "Name": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "ActiveStatus": {
+            "type": "boolean"
+          }
+        },
+        "xml": {
+          "name": "Counterparty"
+        }
+      },
+      "ArrayOfCounterparties": {
+        "type": "object",
+        "properties": {
+          "applicationExecutors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Counterparty"
+            }
+          }
+        },
+        "xml": {
+          "name": "ArrayOfCounterparties"
+        }
+      }
+    },
+    "securitySchemes": {
+      "applications_auth": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://TESTAPP/oauth/dialog",
+            "scopes": {
+              "write:app": "modify pets in your account",
+              "read:app": "read your pets"
+            }
+          }
+        }
+      },
+      "api_key": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header"
+      }
+    }
+  }
+}

@@ -1,0 +1,1088 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Swagger Applications",
+    "description": "Спецификация API модуля Заявки",
+    "contact": {
+      "email": "ellinvzorina@yandex.ru"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Описание требований",
+    "url": "https://docs.google.com/document/d/1lczE3AxYljRbmhk8Hqo5TCrOQtQy1PF65bA2Mb2hZT0/edit?usp=sharing"
+  },
+  "servers": [
+    {
+      "url": "https://TESTAPP/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "application",
+      "description": "Заявки"
+    },
+    {
+      "name": "applicationSource",
+      "description": "Источники поступления заявок"
+    },
+    {
+      "name": "workType",
+      "description": "Виды работ"
+    },
+    {
+      "name": "objectType",
+      "description": "Типы объектов"
+    },
+    {
+      "name": "applicationExecutor",
+      "description": "Исполнители заявок"
+    }
+  ],
+  "paths": {
+    "/applications": {
+      "get": {
+        "tags": [
+          "application"
+        ],
+        "summary": "Список заявок",
+        "operationId": "getApplications",
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayOfApplications"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application": {
+      "post": {
+        "tags": [
+          "application"
+        ],
+        "summary": "Создание новой заявки",
+        "operationId": "addApplication",
+        "requestBody": {
+          "description": "Объект Заявка, создание новой",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Application"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка валидации",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/application/{id}": {
+      "get": {
+        "tags": [
+          "application"
+        ],
+        "summary": "Поиск заявки по ИД",
+        "description": "Возвращает Заявку по её ИД",
+        "operationId": "getApplicationById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Application"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Передан неверный идентификатор",
+            "content": {}
+          },
+          "404": {
+            "description": "Не найдено",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "application"
+        ],
+        "summary": "Обновление информации о заявке",
+        "operationId": "updateApplication",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД Заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект Заявка, обновление",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Application"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка ввода",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ]
+      }
+    },
+    "/applicationSources": {
+      "get": {
+        "tags": [
+          "applicationSource"
+        ],
+        "summary": "Список Источников получения заявок",
+        "operationId": "getApplicationSources",
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayOfApplicationSources"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/applicationSource": {
+      "post": {
+        "tags": [
+          "applicationSource"
+        ],
+        "summary": "Создание нового Источника получения заявки",
+        "operationId": "addApplicationSource",
+        "requestBody": {
+          "description": "Объект Источник получения заявки, создание нового",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationSource"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка валидации",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/applicationSource/{id}": {
+      "get": {
+        "tags": [
+          "applicationSource"
+        ],
+        "summary": "Поиск Источника получения заявки по ИД",
+        "description": "Возвращает Источник получения заявки по его ИД",
+        "operationId": "getApplicationSourceById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД источника получения заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int16"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationSource"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Передан неверный идентификатор",
+            "content": {}
+          },
+          "404": {
+            "description": "Не найдено",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "applicationSource"
+        ],
+        "summary": "Обновление информации об Источнике получения заявки",
+        "operationId": "updateApplicationSource",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД Источника получения заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int16"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект Источник получения заявки, обновление",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationSource"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка ввода",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ]
+      }
+    },
+    "/workTypes": {
+      "get": {
+        "tags": [
+          "workType"
+        ],
+        "summary": "Список Видов работ",
+        "operationId": "getWorkTypes",
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayOfWorkTypes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workType": {
+      "post": {
+        "tags": [
+          "workType"
+        ],
+        "summary": "Создание нового Вида работ",
+        "operationId": "addWorkType",
+        "requestBody": {
+          "description": "Объект Вид работ, создание нового",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkType"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка валидации",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/workType/{id}": {
+      "get": {
+        "tags": [
+          "workType"
+        ],
+        "summary": "Поиск Вида работ по ИД",
+        "description": "Возвращает Вид работ по его ИД",
+        "operationId": "getWorkTypeById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД вида работ",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int16"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkType"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Передан неверный идентификатор",
+            "content": {}
+          },
+          "404": {
+            "description": "Не найдено",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "workType"
+        ],
+        "summary": "Обновление информации о Виде работ",
+        "operationId": "updateWorkType",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД Вида работ",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int16"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект Вид работ, обновление",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkType"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка ввода",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ]
+      }
+    },
+    "/objectTypes": {
+      "get": {
+        "tags": [
+          "objectType"
+        ],
+        "summary": "Список Типов объектов",
+        "operationId": "getObjectTypes",
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayOfObjectTypes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/objectType": {
+      "post": {
+        "tags": [
+          "objectType"
+        ],
+        "summary": "Создание нового Типа объекта",
+        "operationId": "addObjectType",
+        "requestBody": {
+          "description": "Объект Тип объекта, создание нового",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectType"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка валидации",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/objectType/{id}": {
+      "get": {
+        "tags": [
+          "objectType"
+        ],
+        "summary": "Поиск Типа объекта по ИД",
+        "description": "Возвращает Тип объекта по его ИД",
+        "operationId": "getObjectTypeById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД типа объекта",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int16"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectType"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Передан неверный идентификатор",
+            "content": {}
+          },
+          "404": {
+            "description": "Не найдено",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "objectType"
+        ],
+        "summary": "Обновление информации о Типе объекта",
+        "operationId": "updateObjectType",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД Типа объекта",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int16"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект Тип объекта, обновление",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectType"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка ввода",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ]
+      }
+    },
+    "/applicationExecutor/findByApplication": {
+      "get": {
+        "tags": [
+          "applicationExecutor"
+        ],
+        "summary": "Список Исполнителей заявки по ИД заявки",
+        "operationId": "getApplicationExecutorsByApplication",
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "query",
+            "description": "ИД Заявки",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayOfApplicationExecutors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/applicationExecutor": {
+      "post": {
+        "tags": [
+          "applicationExecutor"
+        ],
+        "summary": "Создание нового Исполнителя заявки",
+        "operationId": "addOApplicationExecutor",
+        "requestBody": {
+          "description": "Объект Исполнитель заявки, создание нового",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationExecutor"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка валидации",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/applicationExecutor/{id}": {
+      "get": {
+        "tags": [
+          "applicationExecutor"
+        ],
+        "summary": "Поиск Исполнителя заявки по ИД",
+        "description": "Возвращает Исполнителя заявки по его ИД",
+        "operationId": "getApplicationExecutorById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД исполнителя заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationExecutor"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Передан неверный идентификатор",
+            "content": {}
+          },
+          "404": {
+            "description": "Не найдено",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "applicationExecutor"
+        ],
+        "summary": "Обновление информации об Исполнителе заявки",
+        "operationId": "updateApplicationExecutor",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ИД Исполнителя заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект Исполнитель заявки, обновление",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationExecutor"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешно",
+            "content": {}
+          },
+          "405": {
+            "description": "Ошибка ввода",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "applications_auth": [
+              "write:apps",
+              "read:apps"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApplicationSource": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int16"
+          },
+          "name": {
+            "type": "string"
+          },
+          "activeState": {
+            "type": "boolean"
+          }
+        },
+        "xml": {
+          "name": "ApplicationSource"
+        }
+      },
+      "WorkType": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int16"
+          },
+          "name": {
+            "type": "string"
+          },
+          "activeState": {
+            "type": "boolean"
+          }
+        },
+        "xml": {
+          "name": "WorkType"
+        }
+      },
+      "ObjectType": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int16"
+          },
+          "name": {
+            "type": "string"
+          },
+          "activeState": {
+            "type": "boolean"
+          }
+        },
+        "xml": {
+          "name": "ObjectType"
+        }
+      },
+      "ApplicationExecutor": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int16"
+          },
+          "application": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "counterpartyId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "counterpartyName": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "xml": {
+          "name": "ApplicationExecutor"
+        }
+      },
+      "Application": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "number": {
+            "type": "string",
+            "maxLength": 100,
+            "pattern": "^\\w{1,999}$"
+          },
+          "registrationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "applicationSource": {
+            "$ref": "#/components/schemas/ApplicationSource"
+          },
+          "workType": {
+            "$ref": "#/components/schemas/WorkType"
+          },
+          "objectType": {
+            "$ref": "#/components/schemas/ObjectType"
+          },
+          "objectName": {
+            "type": "string",
+            "maxLength": 250
+          },
+          "objectAddresse": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "customerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "customerName": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "executorsView": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Новая",
+              "В работе",
+              "Заключен договор",
+              "Выполнена"
+            ]
+          },
+          "applicationExecutors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationExecutor"
+            }
+          }
+        },
+        "xml": {
+          "name": "Application"
+        }
+      },
+      "ArrayOfApplications": {
+        "type": "object",
+        "properties": {
+          "applications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Application"
+            }
+          }
+        },
+        "xml": {
+          "name": "ArrayOfApplications"
+        }
+      },
+      "ArrayOfApplicationSources": {
+        "type": "object",
+        "properties": {
+          "applicationSources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationSource"
+            }
+          }
+        },
+        "xml": {
+          "name": "ArrayOfApplicationSources"
+        }
+      },
+      "ArrayOfWorkTypes": {
+        "type": "object",
+        "properties": {
+          "workTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkType"
+            }
+          }
+        },
+        "xml": {
+          "name": "ArrayOfWorkTypes"
+        }
+      },
+      "ArrayOfObjectTypes": {
+        "type": "object",
+        "properties": {
+          "objectTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ObjectType"
+            }
+          }
+        },
+        "xml": {
+          "name": "ArrayOfObjectTypes"
+        }
+      },
+      "ArrayOfApplicationExecutors": {
+        "type": "object",
+        "properties": {
+          "applicationExecutors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationExecutor"
+            }
+          }
+        },
+        "xml": {
+          "name": "ArrayOfApplicationExecutors"
+        }
+      }
+    },
+    "securitySchemes": {
+      "applications_auth": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://TESTAPP/oauth/dialog",
+            "scopes": {
+              "write:app": "modify pets in your account",
+              "read:app": "read your pets"
+            }
+          }
+        }
+      },
+      "api_key": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header"
+      }
+    }
+  }
+}
